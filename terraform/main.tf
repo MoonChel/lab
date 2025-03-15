@@ -5,6 +5,10 @@ provider "helm" {
   }
 }
 
+provider "kubernetes" {
+  config_path = "/etc/rancher/k3s/k3s.yaml"
+}
+
 resource "helm_release" "argocd" {
   name       = "argocd"
   namespace  = "argocd"
