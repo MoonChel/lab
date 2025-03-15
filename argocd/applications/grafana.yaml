@@ -13,12 +13,26 @@ spec:
       values: |
         service:
           type: LoadBalancer
+
         persistence:
           enabled: true
           size: 10Gi
+
         grafana:
           adminPassword: "admin"
           logLevel: "debug"
+
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          annotations:
+            traefik.ingress.kubernetes.io/router.entrypoints: web # If using Traefik
+          hosts:
+            - grafana.127.0.0.1.nip.io
+            - grafana.192.168.0.21.nip.io
+          paths:
+            - /
+          tls: []  # Disable TLS since you're using HTTP or configure TLS if necessary
   destination:
     server: "https://kubernetes.default.svc"
     namespace: grafana
