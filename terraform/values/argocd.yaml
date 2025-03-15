@@ -1,0 +1,15 @@
+configs:
+  params:
+    server.insecure: true
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    hostname: argo.127.0.0.1.nip.io
+    extraHosts:
+      - name: argo.192.168.0.21.nip.io
+        path: /
+    tls: false
