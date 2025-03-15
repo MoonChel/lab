@@ -18,10 +18,6 @@ spec:
           enabled: true
           size: 10Gi
 
-        grafana:
-          adminPassword: "admin"
-          logLevel: "debug"
-
         ingress:
           enabled: true
           ingressClassName: traefik
