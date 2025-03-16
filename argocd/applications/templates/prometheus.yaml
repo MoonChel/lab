@@ -35,4 +35,4 @@ spec:
             port: 80
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: prometheus
+    namespace: monitoring

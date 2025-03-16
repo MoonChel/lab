@@ -84,4 +84,4 @@ spec:
                   __path__: /var/log/syslog
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: promtail
+    namespace: monitoring

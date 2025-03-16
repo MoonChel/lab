@@ -77,4 +77,4 @@ spec:
                 - loki.192.168.0.21.nip.io
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: loki
+    namespace: monitoring
