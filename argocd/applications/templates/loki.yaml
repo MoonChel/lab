@@ -76,19 +76,14 @@ spec:
         # If using an external network to expose the service, use ingress:
         ingress:
           enabled: true
-          ingressClassName: "nginx" # or "traefik" depending on your ingress controller
+          ingressClassName: "traefik"
           annotations:
-            nginx.ingress.kubernetes.io/rewrite-target: /
+            traefik.ingress.kubernetes.io/router.entrypoints: web
           hosts:
             - loki.127.0.0.1.nip.io
             - loki.192.168.0.21.nip.io
-          paths:
-            - /
-          tls:
-            - secretName: loki-tls-secret
-              hosts:
-                - loki.127.0.0.1.nip.io
-                - loki.192.168.0.21.nip.io
+          tls: []
+
   destination:
     server: "https://kubernetes.default.svc"
     namespace: monitoring
