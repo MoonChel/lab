@@ -53,6 +53,9 @@ spec:
                 prefix: loki_index_
                 period: 24h
 
+        storage:
+          type: filesystem
+
         # Set Loki's storage backend (you can use GCS, S3, etc.)
         storageConfig:
           boltdb_shipper:
