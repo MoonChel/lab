@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: promtail
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: promtail
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 6.16.6
+    helm:
+      values: |
+        adminUser: admin
+        adminPassword: admin
+
+        service:
+          type: ClusterIP
+          port: 80
+
+        persistence:
+          enabled: true
+          size: 10Gi
+
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          annotations:
+            traefik.ingress.kubernetes.io/router.entrypoints: web # If using Traefik
+          hosts:
+            - promtail.127.0.0.1.nip.io
+            - promtail.192.168.0.21.nip.io
+          paths:
+            - /
+          tls: []  # Disable TLS since you're using HTTP or configure TLS if necessary
+
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+              - name: Prometheus
+                type: prometheus
+                access: proxy
+                url: http://prometheus-server.prometheus.svc.cluster.local
+                isDefault: true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: promtail
