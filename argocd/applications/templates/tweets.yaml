@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     path: argocd/charts/tweets
-    repoURL: git@github.com:MoonChel/lab.git
+    repoURL: https://github.com/MoonChel/lab.git
     targetRevision: master
     helm:
       ignoreMissingValueFiles: true
