@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tweets
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: tweets
+    repoURL: git@github.com:MoonChel/lab.git
+    targetRevision: master
+    helm:
+      ignoreMissingValueFiles: true
+      valuesFiles:
+        - image.yaml
+      values: |
+        namespace: tweets
+
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: tweets
