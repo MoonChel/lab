@@ -30,6 +30,8 @@ spec:
         singleBinary:
           replicas: 1
 
+        deploymentMode: SingleBinary<->SimpleScalable
+
         table_manager:
           retention_deletes_enabled: true
           retention_period: 720 # 30 days retention, adjust as needed
