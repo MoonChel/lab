@@ -43,6 +43,16 @@ spec:
         # If using multiple nodes, set replicas
         replicas: 2
 
+        schemaConfig:
+          configs:
+            - from: 2024-04-01
+              store: tsdb
+              object_store: filesystem
+              schema: v13
+              index:
+                prefix: loki_index_
+                period: 24h
+
         # Set Loki's storage backend (you can use GCS, S3, etc.)
         storageConfig:
           boltdb_shipper:
