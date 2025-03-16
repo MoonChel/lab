@@ -11,38 +11,70 @@ spec:
     targetRevision: 6.28.0
     helm:
       values: |
-        adminUser: admin
-        adminPassword: admin
+        loki:
+          config:
+            table_manager:
+              retention_deletes_enabled: true
+              retention_period: 168h # 7 days retention, adjust as needed
+            chunk_store_config:
+              max_look_back_period: 0s
+            ingester:
+              max_transfer_retries: 0
+              chunk_target_size: 1048576 # Adjust size based on expected data load
 
-        service:
-          type: ClusterIP
-          port: 80
-
+        # Enable persistence if you want to retain logs
         persistence:
           enabled: true
           size: 10Gi
+          storageClassName: "local-path"
 
+        # Loki service configuration
+        service:
+          type: ClusterIP
+          port: 3100
+          targetPort: 3100
+
+        # Resources allocation for Loki components
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+
+        # Enable Loki's Prometheus-compatible API
+        api:
+          enabled: true
+
+        # If using multiple nodes, set replicas
+        replicas: 2
+
+        # Set Loki's storage backend (you can use GCS, S3, etc.)
+        storageConfig:
+          boltdb_shipper:
+            active_index_directory: /data/loki/index
+            cache_location: /data/loki/cache
+            shared_store: filesystem
+          filesystem:
+            directory: /data/loki/chunks
+
+        # If using an external network to expose the service, use ingress:
         ingress:
           enabled: true
-          ingressClassName: traefik
+          ingressClassName: "nginx" # or "traefik" depending on your ingress controller
           annotations:
-            traefik.ingress.kubernetes.io/router.entrypoints: web # If using Traefik
+            nginx.ingress.kubernetes.io/rewrite-target: /
           hosts:
             - loki.127.0.0.1.nip.io
             - loki.192.168.0.21.nip.io
           paths:
             - /
-          tls: []  # Disable TLS since you're using HTTP or configure TLS if necessary
-
-        datasources:
-          datasources.yaml:
-            apiVersion: 1
-            datasources:
-              - name: Prometheus
-                type: prometheus
-                access: proxy
-                url: http://prometheus-server.prometheus.svc.cluster.local
-                isDefault: true
+          tls:
+            - secretName: loki-tls-secret
+              hosts:
+                - loki.127.0.0.1.nip.io
+                - loki.192.168.0.21.nip.io
   destination:
     server: "https://kubernetes.default.svc"
     namespace: loki

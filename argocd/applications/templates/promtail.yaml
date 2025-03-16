@@ -11,38 +11,77 @@ spec:
     targetRevision: 6.16.6
     helm:
       values: |
-        adminUser: admin
-        adminPassword: admin
+        promtail:
+          config:
+            server:
+              http_listen_port: 3101
+              grpc_listen_port: 9095
 
-        service:
-          type: ClusterIP
-          port: 80
+            positions:
+              filename: /tmp/positions.yaml
 
+            clients:
+              - url: http://loki.127.0.0.1.nip.io:3100/api/prom/push
+              - url: http://loki.192.168.0.21.nip.io:3100/api/prom/push
+
+            scrape_configs:
+              - job_name: kubernetes-pods
+                kubernetes_sd_configs:
+                  - role: pod
+                relabel_configs:
+                  - source_labels: [__meta_kubernetes_pod_label_app]
+                    target_label: app
+                  - source_labels: [__meta_kubernetes_namespace]
+                    target_label: kubernetes_namespace
+
+              - job_name: system
+                static_configs:
+                  - targets: ['localhost']
+                    labels:
+                      job: varlogs
+                      __path__: /var/log/*.log
+
+        # Resources allocation for Promtail
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+        # Enable persistence for Promtail if needed (for positions file)
         persistence:
           enabled: true
-          size: 10Gi
+          size: 1Gi
+          storageClassName: "local-path"
 
+        # Enable the Promtail service
+        service:
+          enabled: true
+          type: ClusterIP
+          port: 3101
+
+        # If you want to expose Promtail's HTTP endpoints via ingress
         ingress:
           enabled: true
-          ingressClassName: traefik
+          ingressClassName: "nginx" # or "traefik" depending on your ingress controller
           annotations:
-            traefik.ingress.kubernetes.io/router.entrypoints: web # If using Traefik
+            nginx.ingress.kubernetes.io/rewrite-target: /
           hosts:
             - promtail.127.0.0.1.nip.io
             - promtail.192.168.0.21.nip.io
           paths:
             - /
-          tls: []  # Disable TLS since you're using HTTP or configure TLS if necessary
 
-        datasources:
-          datasources.yaml:
-            apiVersion: 1
-            datasources:
-              - name: Prometheus
-                type: prometheus
-                access: proxy
-                url: http://prometheus-server.prometheus.svc.cluster.local
-                isDefault: true
+        # Optional: Enable log collection from other sources or add custom scrape_configs
+        scrape_configs:
+          - job_name: syslog
+            static_configs:
+              - targets: ['localhost']
+                labels:
+                  job: syslog
+                  __path__: /var/log/syslog
   destination:
     server: "https://kubernetes.default.svc"
     namespace: promtail

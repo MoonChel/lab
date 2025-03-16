@@ -21,6 +21,7 @@ spec:
         persistence:
           enabled: true
           size: 10Gi
+          storageClassName: "local-path"
 
         ingress:
           enabled: true
