@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    chart: tweets
+    path: argocd/charts/tweets
     repoURL: git@github.com:MoonChel/lab.git
     targetRevision: master
     helm:
