@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: fastapi-app  # This needs to match the Service's label selector
+      app: fastapi-app
   namespaceSelector:
     matchNames:
       - tweets
