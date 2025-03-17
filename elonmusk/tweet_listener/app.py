@@ -20,4 +20,5 @@ async def new_message_handler(event):
 
 
 if (__name__ == '__main__'):
+    print('listener is running...')
     client.run_until_disconnected()
