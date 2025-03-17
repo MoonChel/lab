@@ -10,6 +10,7 @@ on:
     branches: [ "master" ]
     paths:
       - 'elonmusk/tweet_listener/**'
+  workflow_dispatch:
 
 env:
   # Use docker.io for Docker Hub if empty
