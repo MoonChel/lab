@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: fastapi-service-monitor
-  namespace: tweets
+  namespace: monitoring
   labels:
     release: prometheus
 spec:
