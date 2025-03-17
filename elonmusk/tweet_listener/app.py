@@ -1,19 +1,23 @@
+import requests
 from telethon import TelegramClient, events
 
-# Get these from https://my.telegram.org
-api_id = "your_api_id"
-api_hash = "your_api_hash"
-channel_username = "your_channel_name"  # Example: "t.me/examplechannel" -> "examplechannel"
+import settings
 
-client = TelegramClient("session_name", api_id, api_hash)
+client = TelegramClient(
+    settings.TELEGRAM_SESSION_NAME,
+    api_id=0,
+    api_hash="none"
+).start(bot_token=settings.TELEGRA_BOT_TOKEN)
 
-@client.on(events.NewMessage(chats=channel_username))
+
+@client.on(events.NewMessage(chats=settings.TELEGRAM_CHANNEL_NAME))
 async def new_message_handler(event):
-    print(f"New message in {channel_username}: {event.text}")
+    event_json = event.to_dict()
+    print(f"New message in {settings.TELEGRAM_CHANNEL_NAME}: {event_json}")
 
-    # You can send this message to FastAPI here
-    import requests
-    requests.post("http://127.0.0.1:8000/telegram-webhook/", json={"message": event.text})
+    # Send entire event JSON to FastAPI
+    requests.post(settings.WEBHOOK_URL, json=event_json)
 
-client.start()
-client.run_until_disconnected()
+
+if (__name__ == '__main__'):
+    client.run_until_disconnected()

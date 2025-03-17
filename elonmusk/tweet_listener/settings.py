@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-TELEGRAM_API_ID = os.environ['TELEGRAM_API_ID']
-TELEGRAM_API_HASH = os.environ['TELEGRAM_API_HASH']
-LAST_MESSAGE_FILE = os.getenv('LAST_MESSAGE_FILE', "last_message_id.json")
-TELEGRAM_SESSION_NAME = os.getenv('TELEGRAM_SESSION_NAME', 'telegram_session')
+TELEGRA_BOT_TOKEN = os.environ['TELEGRA_BOT_TOKEN']
+TELEGRAM_CHANNEL_NAME = os.getenv('TELEGRAM_CHANNEL_NAME', 'elon_alerts')
+TELEGRAM_SESSION_NAME = os.getenv('TELEGRAM_SESSION_NAME', 'bot_session')
+WEBHOOK_URL = os.environ['WEBHOOK_URL']
