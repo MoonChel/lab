@@ -22,7 +22,7 @@ client = TelegramClient(
 @client.on(events.NewMessage(chats=settings.TELEGRAM_CHANNEL_NAME))
 async def new_message_handler(event):
     event_json = event.to_dict()
-    logger.info("New message received", channel=settings.TELEGRAM_CHANNEL_NAME, event=event_json)
+    logger.info("New message received", **event_json)
 
     # Send entire event JSON to FastAPI
     response = requests.post(settings.WEBHOOK_URL, json=event_json)
