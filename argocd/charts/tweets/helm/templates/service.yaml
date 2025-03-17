@@ -8,6 +8,7 @@ spec:
   selector:
     app: fastapi-app
   ports:
-    - protocol: TCP
+    - name: http
       port: 80
-      targetPort: 8000
+      targetPort: http
+      protocol: TCP

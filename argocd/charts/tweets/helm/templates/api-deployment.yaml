@@ -16,4 +16,6 @@ spec:
         - name: fastapi-container
           image: {{ .Values.api.image }}
           ports:
-            - containerPort: 8000
+            - name: http
+              containerPort: 8000
+              protocol: TCP
