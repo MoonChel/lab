@@ -10,7 +10,7 @@ spec:
     repoURL: https://github.com/MoonChel/lab.git
     targetRevision: master
     helm:
-      valuesFiles:
+      valueFiles:
         - ../version/listener-image.yaml
         - ../version/api-image.yaml
       values: |
