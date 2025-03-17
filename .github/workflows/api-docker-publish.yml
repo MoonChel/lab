@@ -13,6 +13,10 @@ on:
     paths:
       - 'elonmusk/api/**'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
