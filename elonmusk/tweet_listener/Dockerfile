@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the Telethon script
 COPY app.py .
+COPY settings.py .
 
 # Expose no ports as this runs as a client
 CMD ["python", "app.py"]
