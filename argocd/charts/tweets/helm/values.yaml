@@ -1,4 +1,4 @@
-namespaces: tweets
+namespace: tweets
 
 api:
   image:
