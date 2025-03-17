@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  fastapi-server:
+    build: ./server
+    ports:
+      - "8000:8000"
+    restart: always
+
+  telegram-listener:
+    build: ./tweet_listener
+    depends_on:
+      - fastapi-server
+    restart: always
