@@ -17,4 +17,4 @@ COPY app.py .
 EXPOSE 8000
 
 # Command to run FastAPI with Uvicorn
-CMD ["uvicorn", "fastapi_server:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

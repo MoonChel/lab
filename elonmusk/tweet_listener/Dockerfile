@@ -11,7 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the Telethon script
-COPY telethon_script.py .
+COPY app.py .
 
 # Expose no ports as this runs as a client
-CMD ["python", "telethon_script.py"]
+CMD ["python", "app.py"]
