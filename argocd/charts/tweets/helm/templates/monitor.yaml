@@ -8,12 +8,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      argocd.argoproj.io/instance: tweets
+      app: fastapi-app  # This needs to match the Service's label selector
   namespaceSelector:
     matchNames:
       - tweets
   endpoints:
-    - port: http
+    - port: 80
       targetPort: 80
       interval: 30s
       path: /metrics
