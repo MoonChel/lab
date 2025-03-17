@@ -6,6 +6,8 @@ name: Docker build API
 # documentation.
 
 on:
+  workflow_dispatch:
+
   push:
     branches: [ "master" ]
     paths:
