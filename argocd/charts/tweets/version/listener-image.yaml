@@ -1,2 +1,2 @@
 listener:
-  image: ghcr.io/moonchel/lab/tweet-listener:master
+  image: ghcr.io/moonchel/lab/tweet-listener:master@
