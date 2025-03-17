@@ -21,6 +21,7 @@ permissions:
   contents: "read"
   actions: "read"
   id-token: "write"
+  packages: "write"
 
 env:
   # Use docker.io for Docker Hub if empty
