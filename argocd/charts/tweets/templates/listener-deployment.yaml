@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegram-listener
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegram-listener
+  template:
+    metadata:
+      labels:
+        app: telegram-listener
+    spec:
+      containers:
+        - name: listener-container
+          image: your-listener-image:latest
+          env:
+            - name: TELEGRAM_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-bot-secrets
+                  key: TELEGRAM_BOT_TOKEN

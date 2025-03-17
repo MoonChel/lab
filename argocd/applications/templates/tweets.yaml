@@ -12,7 +12,8 @@ spec:
     helm:
       ignoreMissingValueFiles: true
       valuesFiles:
-        - image.yaml
+        - listener-image.yaml
+        - api-image.yaml
       values: |
         namespace: tweets
 

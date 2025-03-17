@@ -7,7 +7,7 @@ client = TelegramClient(
     settings.TELEGRAM_SESSION_NAME,
     api_id=0,
     api_hash="none"
-).start(bot_token=settings.TELEGRA_BOT_TOKEN)
+).start(bot_token=settings.TELEGRAM_BOT_TOKEN)
 
 
 @client.on(events.NewMessage(chats=settings.TELEGRAM_CHANNEL_NAME))
