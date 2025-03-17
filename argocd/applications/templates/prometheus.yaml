@@ -1,25 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus
+  name: kube-prometheus-stack
   namespace: argocd
 spec:
   project: default
-  syncPolicy:
-    syncOptions:
-    - ServerSideApply=true
   source:
-    chart: prometheus
+    chart: kube-prometheus-stack
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 27.5.1
+    targetRevision: 70.0.2
     helm:
       values: |
-        server:
-          persistentVolume:
-            enabled: true
-            size: 10Gi  # 10GB storage for Prometheus data
-          retention: 365d  # Keep data for 365 days
-          retentionSize: 10GB  # Limit data retention to 10GB
+        prometheus:
+          prometheusSpec:
+            retention: 365d
+            retentionSize: 10GB
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 10Gi
 
           ingress:
             enabled: true
@@ -33,9 +35,8 @@ spec:
               - /
             tls: []  # No TLS, plain HTTP
 
-          service:
-            type: ClusterIP
-            port: 80
+        grafana:
+          enabled: false
   destination:
     server: "https://kubernetes.default.svc"
     namespace: monitoring
