@@ -1,2 +1,2 @@
 api:
-  image:
+  image: ghcr.io/moonchel/lab/api:master
