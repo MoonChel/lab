@@ -5,8 +5,8 @@ import settings
 
 client = TelegramClient(
     settings.TELEGRAM_SESSION_NAME,
-    api_id=0,
-    api_hash="none"
+    api_id=settings.TELEGRAM_API_ID,
+    api_hash=settings.TELEGRAM_API_HASH,
 ).start(bot_token=settings.TELEGRAM_BOT_TOKEN)
 
 
