@@ -6,14 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    path: argocd/charts/tweets
+    path: argocd/charts/tweets/helm
     repoURL: https://github.com/MoonChel/lab.git
     targetRevision: master
     helm:
-      ignoreMissingValueFiles: true
       valuesFiles:
-        - listener-image.yaml
-        - api-image.yaml
+        - ../version/listener-image.yaml
+        - ../version/api-image.yaml
       values: |
         namespace: tweets
 

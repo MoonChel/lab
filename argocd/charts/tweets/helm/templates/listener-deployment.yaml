@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: telegram-listener
-  namespace: default
 spec:
   replicas: 1
   selector:
@@ -15,7 +14,7 @@ spec:
     spec:
       containers:
         - name: listener-container
-          image: your-listener-image:latest
+          image: {{ .Values.listener.image }}
           env:
             - name: TELEGRAM_BOT_TOKEN
               valueFrom:

@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fastapi-app
-  namespace: default
 spec:
   replicas: 1
   selector:
@@ -15,6 +14,6 @@ spec:
     spec:
       containers:
         - name: fastapi-container
-          image: your-fastapi-image:latest
+          image: {{ .Values.api.image }}
           ports:
             - containerPort: 8000

@@ -1,0 +1,7 @@
+namespaces: tweets
+
+api:
+  image:
+
+listener:
+  image:
