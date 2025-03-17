@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fastapi-service-monitor
+  namespace: tweets
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      argocd.argoproj.io/instance: tweets
+  namespaceSelector:
+    matchNames:
+      - tweets
+  endpoints:
+    - port: http
+      targetPort: 8000
+      interval: 30s
+      path: /metrics
