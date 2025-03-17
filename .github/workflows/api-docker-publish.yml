@@ -69,7 +69,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch,suffix=-${{ github.sha }}
+            type=raw,value=${{ github.sha }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -105,7 +105,7 @@ jobs:
           file-path: "argocd/charts/tweets/version/api-image.yaml"
           file-content: |
             api:
-              image: ${{ steps.meta.outputs.tags }}@${{ steps.meta.outputs.sha }}
+              image: ${{ steps.meta.outputs.tags }}
           repo: "MoonChel/lab"
           branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
