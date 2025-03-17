@@ -103,7 +103,7 @@ jobs:
           file-path: "argocd/charts/tweets/version/api-image.yaml"
           file-content: |
             api:
-              image: ${{ steps.meta.outputs.tags }}
+              image: ${{ steps.meta.outputs.tags }}@${{ steps.meta.outputs.sha }}
           repo: "MoonChel/lab"
           branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -102,7 +102,7 @@ jobs:
           file-path: "argocd/charts/tweets/version/listener-image.yaml"
           file-content: |
             listener:
-              image: ${{ steps.meta.outputs.tags }}
+              image: ${{ steps.meta.outputs.tags }}@${{ steps.meta.outputs.sha }}
           repo: "MoonChel/lab"
           branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
