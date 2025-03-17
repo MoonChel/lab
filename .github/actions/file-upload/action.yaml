@@ -1,0 +1,72 @@
+name: 'Upload File to Branch using GitHub API'
+description: 'Create a file with specified content and upload it directly to a branch using GitHub API'
+
+inputs:
+  file-path:
+    description: 'The path of the file to create'
+    required: true
+  file-content:
+    description: 'The content to write into the file'
+    required: true
+  repo:
+    description: 'The GitHub repository in the form owner/repo'
+    required: true
+  branch:
+    description: 'The branch where the file will be uploaded'
+    required: true
+  github-token:
+    description: 'Github API token'
+    required: true
+  commit-message:
+    description: 'The commit message for the file upload'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Upload the file to GitHub via API
+      shell: bash
+      run: |
+        # Get the base64-encoded content of the file
+        base64_content=$(echo -n "${{ inputs.file-content }}" | base64 -w 0)
+
+        file_url="https://api.github.com/repos/${{ inputs.repo }}/contents/${{ inputs.file-path }}?ref=${{ inputs.branch }}"
+
+        echo "$file_url"
+
+        # Get the current SHA of the file (if it exists)
+        file_sha=$(curl -s -H "Authorization: token ${{ inputs.github-token }}" ${file_url} | jq -r .sha)
+
+        # Prepare the API URL
+        api_url="https://api.github.com/repos/${{ inputs.repo }}/contents/${{ inputs.file-path }}"
+
+        if [ "$file_sha" != "null" ]; then
+          # File exists, update it
+          curl -X PUT \
+            -H "Content-Type: application/json" \
+            -H "Authorization: token ${{ inputs.github-token }}" \
+            -d '{
+              "message": "${{ inputs.commit-message }}",
+              "content": "'"$base64_content"'",
+              "sha": "'"$file_sha"'",
+              "branch": "${{ inputs.branch }}",
+              "committer": {
+                "name": "GitHub Actions",
+                "email": "action@github.com"
+              }
+            }' $api_url
+        else
+          # File doesn't exist, create it
+          curl -X PUT \
+            -H "Authorization: token ${{ inputs.github-token }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "message": "${{ inputs.commit-message }}",
+              "content": "'"$base64_content"'",
+              "branch": "${{ inputs.branch }}",
+              "committer": {
+                "name": "GitHub Actions",
+                "email": "action@github.com"
+              }
+            }' $api_url
+        fi

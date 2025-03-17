@@ -92,3 +92,15 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Create and upload the file to GitHub
+        uses: ./.github/actions/file-upload
+        with:
+          file-path: "argocd/charts/tweets/version/api-image.yaml"
+          file-content: |
+            api:
+              image: ${{ steps.meta.outputs.tags }}
+          repo: "MoonChel/lab"
+          branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update version file for API"
