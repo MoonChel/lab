@@ -23,6 +23,10 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}/tweet-listener
 
+permissions:
+  contents: "read"
+  actions: "read"
+  id-token: "write"
 
 jobs:
   build:

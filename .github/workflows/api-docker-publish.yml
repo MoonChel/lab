@@ -18,7 +18,9 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: "read"
+  actions: "read"
+  id-token: "write"
 
 env:
   # Use docker.io for Docker Hub if empty
