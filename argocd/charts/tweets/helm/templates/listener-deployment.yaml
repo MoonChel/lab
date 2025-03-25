@@ -23,11 +23,6 @@ spec:
             - name: telegram-session
               mountPath: /app/session
           env:
-            - name: TELEGRAM_BOT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: telegram-bot-secrets
-                  key: TELEGRAM_BOT_TOKEN
             - name: TELEGRAM_API_ID
               valueFrom:
                 secretKeyRef:
@@ -38,15 +33,10 @@ spec:
                 secretKeyRef:
                   name: telegram-bot-secrets
                   key: TELEGRAM_API_HASH
-            - name: TELEGRAM_PASSWORD
+            - name: TELEGRAM_SESSION_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: telegram-bot-secrets
-                  key: TELEGRAM_PASSWORD
-            - name: TELEGRAM_PHONE
-              valueFrom:
-                secretKeyRef:
-                  name: telegram-bot-secrets
-                  key: TELEGRAM_PHONE
+                  key: TELEGRAM_SESSION_TOKEN
             - name: WEBHOOK_URL
               value: http://fastapi-service.{{ .Values.namespace }}.svc.cluster.local
