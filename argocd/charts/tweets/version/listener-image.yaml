@@ -1,2 +1,2 @@
 listener:
-  image: ghcr.io/moonchel/lab/tweet-listener:sha-f6e9f7b6cfdadd8838850ed66843010ceff0dab6
+  image: ghcr.io/moonchel/lab/tweet-listener:sha-e166967e9c6e4734dbc5c9178f61ee607b152d3b
