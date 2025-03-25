@@ -37,7 +37,7 @@ def classify_message(text):
     else:
         return "other"
 
-@client.on(events.NewMessage(chats=settings.TELEGRAM_CHANNEL_NAME))
+@client.on(events.NewMessage(chats=[f"@{settings.TELEGRAM_CHANNEL_NAME}"]))
 async def new_message_handler(event):
     event_json = event.to_dict()
     logger.info("New message received", **event_json)
