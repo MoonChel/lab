@@ -31,5 +31,15 @@ spec:
                 secretKeyRef:
                   name: telegram-bot-secrets
                   key: TELEGRAM_API_HASH
+            - name: TELEGRAM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-bot-secrets
+                  key: TELEGRAM_PASSWORD
+            - name: TELEGRAM_PHONE
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-bot-secrets
+                  key: TELEGRAM_PHONE
             - name: WEBHOOK_URL
               value: http://fastapi-service.{{ .Values.namespace }}.svc.cluster.local
