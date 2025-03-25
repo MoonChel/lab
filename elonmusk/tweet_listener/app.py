@@ -41,10 +41,12 @@ def classify_message(text):
 
 @client.on(events.NewMessage(chats=[settings.TELEGRAM_CHANNEL_NAME, "@test_channel_elon"]))
 async def new_message_handler(event):
-    event_json = event.to_dict()
+    event_json = {
+        "id": event.message.id,
+        "msg_type": classify_message(event.message.message),
+        "text": event.message.message,
+    }
     logger.info("New message received", **event_json)
-
-    event_json['msg_type'] = classify_message(event.text)
 
     # Send entire event JSON to FastAPI
     response = requests.post(settings.WEBHOOK_URL, json=event_json)
