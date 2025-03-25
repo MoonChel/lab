@@ -18,7 +18,7 @@ spec:
           image: {{ .Values.listener.image }}
           envFrom:
             - secretRef:
-              name: telegram-bot-secrets
+                name: telegram-bot-secrets
           env:
             - name: WEBHOOK_URL
               value: http://fastapi-service.{{ .Values.namespace }}.svc.cluster.local
