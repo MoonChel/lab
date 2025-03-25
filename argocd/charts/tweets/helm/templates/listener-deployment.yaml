@@ -21,4 +21,4 @@ spec:
                 name: telegram-bot-secrets
           env:
             - name: WEBHOOK_URL
-              value: http://fastapi-service.{{ .Values.namespace }}.svc.cluster.local
+              value: http://fastapi-service.{{ .Values.namespace }}.svc.cluster.local/telegram-webhook/
