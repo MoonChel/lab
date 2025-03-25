@@ -12,16 +12,9 @@ spec:
       labels:
         app: telegram-listener
     spec:
-      volumes:
-        - name: telegram-session
-          persistentVolumeClaim:
-            claimName: telegram-session-pvc
       containers:
         - name: listener-container
           image: {{ .Values.listener.image }}
-          volumeMounts:
-            - name: telegram-session
-              mountPath: /app/session
           env:
             - name: TELEGRAM_API_ID
               valueFrom:
