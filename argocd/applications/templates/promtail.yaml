@@ -1,92 +1,92 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: promtail
-  namespace: argocd
-spec:
-  project: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - PruneLast=true
-  source:
-    chart: promtail
-    repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 6.16.6
-    helm:
-      values: |
-        promtail:
-          config:
-            server:
-              http_listen_port: 3101
-              grpc_listen_port: 9095
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: promtail
+#   namespace: argocd
+# spec:
+#   project: default
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - PruneLast=true
+#   source:
+#     chart: promtail
+#     repoURL: https://grafana.github.io/helm-charts
+#     targetRevision: 6.16.6
+#     helm:
+#       values: |
+#         promtail:
+#           config:
+#             server:
+#               http_listen_port: 3101
+#               grpc_listen_port: 9095
 
-            positions:
-              filename: /tmp/positions.yaml
+#             positions:
+#               filename: /tmp/positions.yaml
 
-            clients:
-              - url: http://loki.monitoring.svc.cluster.local:3100/api/prom/push
+#             clients:
+#               - url: http://loki.monitoring.svc.cluster.local:3100/api/prom/push
 
-            scrape_configs:
-              - job_name: kubernetes-pods
-                kubernetes_sd_configs:
-                  - role: pod
-                relabel_configs:
-                  - source_labels: [__meta_kubernetes_pod_label_app]
-                    target_label: app
-                  - source_labels: [__meta_kubernetes_namespace]
-                    target_label: kubernetes_namespace
+#             scrape_configs:
+#               - job_name: kubernetes-pods
+#                 kubernetes_sd_configs:
+#                   - role: pod
+#                 relabel_configs:
+#                   - source_labels: [__meta_kubernetes_pod_label_app]
+#                     target_label: app
+#                   - source_labels: [__meta_kubernetes_namespace]
+#                     target_label: kubernetes_namespace
 
-              - job_name: system
-                static_configs:
-                  - targets: ['localhost']
-                    labels:
-                      job: varlogs
-                      __path__: /var/log/*.log
+#               - job_name: system
+#                 static_configs:
+#                   - targets: ['localhost']
+#                     labels:
+#                       job: varlogs
+#                       __path__: /var/log/*.log
 
-        # Resources allocation for Promtail
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "200m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+#         # Resources allocation for Promtail
+#         resources:
+#           requests:
+#             memory: "256Mi"
+#             cpu: "200m"
+#           limits:
+#             memory: "512Mi"
+#             cpu: "500m"
 
-        # Enable persistence for Promtail if needed (for positions file)
-        persistence:
-          enabled: true
-          size: 1Gi
-          storageClassName: "local-path"
+#         # Enable persistence for Promtail if needed (for positions file)
+#         persistence:
+#           enabled: true
+#           size: 1Gi
+#           storageClassName: "local-path"
 
-        # Enable the Promtail service
-        service:
-          enabled: true
-          type: ClusterIP
-          port: 3101
+#         # Enable the Promtail service
+#         service:
+#           enabled: true
+#           type: ClusterIP
+#           port: 3101
 
-        # If you want to expose Promtail's HTTP endpoints via ingress
-        ingress:
-          enabled: true
-          ingressClassName: "nginx" # or "traefik" depending on your ingress controller
-          annotations:
-            nginx.ingress.kubernetes.io/rewrite-target: /
-          hosts:
-            - promtail.127.0.0.1.nip.io
-            - promtail.192.168.0.21.nip.io
-          paths:
-            - /
+#         # If you want to expose Promtail's HTTP endpoints via ingress
+#         ingress:
+#           enabled: true
+#           ingressClassName: "nginx" # or "traefik" depending on your ingress controller
+#           annotations:
+#             nginx.ingress.kubernetes.io/rewrite-target: /
+#           hosts:
+#             - promtail.127.0.0.1.nip.io
+#             - promtail.192.168.0.21.nip.io
+#           paths:
+#             - /
 
-        # Optional: Enable log collection from other sources or add custom scrape_configs
-        scrape_configs:
-          - job_name: syslog
-            static_configs:
-              - targets: ['localhost']
-                labels:
-                  job: syslog
-                  __path__: /var/log/syslog
-  destination:
-    server: "https://kubernetes.default.svc"
-    namespace: monitoring
+#         # Optional: Enable log collection from other sources or add custom scrape_configs
+#         scrape_configs:
+#           - job_name: syslog
+#             static_configs:
+#               - targets: ['localhost']
+#                 labels:
+#                   job: syslog
+#                   __path__: /var/log/syslog
+#   destination:
+#     server: "https://kubernetes.default.svc"
+#     namespace: monitoring

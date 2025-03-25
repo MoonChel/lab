@@ -1,95 +1,95 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: loki
-  namespace: argocd
-spec:
-  project: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - PruneLast=true
-  source:
-    chart: loki
-    repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 6.28.0
-    helm:
-      values: |
-        loki:
-          commonConfig:
-            replication_factor: 1
-          schemaConfig:
-            configs:
-              - from: 2024-04-01
-                store: tsdb
-                object_store: filesystem
-                schema: v13
-                index:
-                  prefix: loki_index_
-                  period: 24h
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: loki
+#   namespace: argocd
+# spec:
+#   project: default
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - PruneLast=true
+#   source:
+#     chart: loki
+#     repoURL: https://grafana.github.io/helm-charts
+#     targetRevision: 6.28.0
+#     helm:
+#       values: |
+#         loki:
+#           commonConfig:
+#             replication_factor: 1
+#           schemaConfig:
+#             configs:
+#               - from: 2024-04-01
+#                 store: tsdb
+#                 object_store: filesystem
+#                 schema: v13
+#                 index:
+#                   prefix: loki_index_
+#                   period: 24h
 
-          storage:
-            type: filesystem
+#           storage:
+#             type: filesystem
 
-        singleBinary:
-          replicas: 1
+#         singleBinary:
+#           replicas: 1
 
-        deploymentMode: SingleBinary<->SimpleScalable
+#         deploymentMode: SingleBinary<->SimpleScalable
 
-        table_manager:
-          retention_deletes_enabled: true
-          retention_period: 720 # 30 days retention, adjust as needed
+#         table_manager:
+#           retention_deletes_enabled: true
+#           retention_period: 720 # 30 days retention, adjust as needed
 
-        # Enable persistence if you want to retain logs
-        persistence:
-          enabled: true
-          size: 10Gi
-          storageClassName: "local-path"
+#         # Enable persistence if you want to retain logs
+#         persistence:
+#           enabled: true
+#           size: 10Gi
+#           storageClassName: "local-path"
 
-        # Loki service configuration
-        service:
-          type: ClusterIP
-          port: 3100
-          targetPort: 3100
+#         # Loki service configuration
+#         service:
+#           type: ClusterIP
+#           port: 3100
+#           targetPort: 3100
 
-        # Resources allocation for Loki components
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1000m"
-          limits:
-            memory: "4Gi"
-            cpu: "2000m"
+#         # Resources allocation for Loki components
+#         resources:
+#           requests:
+#             memory: "2Gi"
+#             cpu: "1000m"
+#           limits:
+#             memory: "4Gi"
+#             cpu: "2000m"
 
-        # Enable Loki's Prometheus-compatible API
-        api:
-          enabled: true
+#         # Enable Loki's Prometheus-compatible API
+#         api:
+#           enabled: true
 
-        # If using multiple nodes, set replicas
-        replicas: 2
+#         # If using multiple nodes, set replicas
+#         replicas: 2
 
-        # Set Loki's storage backend (you can use GCS, S3, etc.)
-        storageConfig:
-          boltdb_shipper:
-            active_index_directory: /data/loki/index
-            cache_location: /data/loki/cache
-            shared_store: filesystem
-          filesystem:
-            directory: /data/loki/chunks
+#         # Set Loki's storage backend (you can use GCS, S3, etc.)
+#         storageConfig:
+#           boltdb_shipper:
+#             active_index_directory: /data/loki/index
+#             cache_location: /data/loki/cache
+#             shared_store: filesystem
+#           filesystem:
+#             directory: /data/loki/chunks
 
-        # If using an external network to expose the service, use ingress:
-        ingress:
-          enabled: true
-          ingressClassName: "traefik"
-          annotations:
-            traefik.ingress.kubernetes.io/router.entrypoints: web
-          hosts:
-            - loki.127.0.0.1.nip.io
-            - loki.192.168.0.21.nip.io
-          tls: []
+#         # If using an external network to expose the service, use ingress:
+#         ingress:
+#           enabled: true
+#           ingressClassName: "traefik"
+#           annotations:
+#             traefik.ingress.kubernetes.io/router.entrypoints: web
+#           hosts:
+#             - loki.127.0.0.1.nip.io
+#             - loki.192.168.0.21.nip.io
+#           tls: []
 
-  destination:
-    server: "https://kubernetes.default.svc"
-    namespace: monitoring
+#   destination:
+#     server: "https://kubernetes.default.svc"
+#     namespace: monitoring
