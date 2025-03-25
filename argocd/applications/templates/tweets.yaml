@@ -5,6 +5,12 @@ metadata:
   namespace: argocd
 spec:
   project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PruneLast=true
   source:
     path: argocd/charts/tweets/helm
     repoURL: https://github.com/MoonChel/lab.git

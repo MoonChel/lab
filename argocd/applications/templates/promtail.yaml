@@ -5,6 +5,12 @@ metadata:
   namespace: argocd
 spec:
   project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PruneLast=true
   source:
     chart: promtail
     repoURL: https://grafana.github.io/helm-charts
