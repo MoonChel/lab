@@ -2,6 +2,8 @@ import re
 import requests
 import structlog
 from telethon import TelegramClient, events
+from telethon.sessions import StringSession
+
 import settings
 
 # Configure structlog
@@ -14,7 +16,7 @@ structlog.configure(
 logger = structlog.get_logger()
 
 client = TelegramClient(
-    settings.TELEGRAM_SESSION_NAME,
+    StringSession(settings.TELEGRAM_SESSION_TOKEN),
     api_id=settings.TELEGRAM_API_ID,
     api_hash=settings.TELEGRAM_API_HASH,
 ).start()
