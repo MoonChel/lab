@@ -17,7 +17,10 @@ resource "helm_release" "argocd" {
   version    = "7.8.10"
   create_namespace = true
 
-  values = [file("${path.module}/values/argocd.yaml")]
+  values = [
+    file("${path.module}/argo-values/values.yaml"),
+    file("${path.module}/argo-values/resources.yaml"),
+  ]
 }
 
 resource "kubernetes_manifest" "argocd_root_app" {
