@@ -20,6 +20,7 @@ spec:
         loki:
           commonConfig:
             replication_factor: 1
+
           schemaConfig:
             configs:
               - from: 2024-04-01
@@ -35,6 +36,13 @@ spec:
 
         singleBinary:
           replicas: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
 
         deploymentMode: SingleBinary<->SimpleScalable
 
@@ -54,21 +62,12 @@ spec:
           port: 3100
           targetPort: 3100
 
-        # Resources allocation for Loki components
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1000m"
-          limits:
-            memory: "4Gi"
-            cpu: "2000m"
-
         # Enable Loki's Prometheus-compatible API
         api:
           enabled: true
 
         # If using multiple nodes, set replicas
-        replicas: 2
+        replicas: 1
 
         # Set Loki's storage backend (you can use GCS, S3, etc.)
         storageConfig:
