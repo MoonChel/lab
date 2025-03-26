@@ -20,8 +20,8 @@ redis:
   exporter:
     resources:
       limits:
-        cpu: 50m
-        memory: 64Mi
+        cpu: 100m
+        memory: 256Mi
       requests:
         cpu: 10m
         memory: 32Mi
@@ -29,8 +29,8 @@ redis:
 server:
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 250m
+      memory: 256Mi
     requests:
       cpu: 50m
       memory: 64Mi
@@ -38,8 +38,8 @@ server:
 repoServer:
   resources:
     limits:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
-      cpu: 10m
+      cpu: 100m
       memory: 64Mi
